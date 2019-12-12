@@ -1,35 +1,45 @@
 package api
 
 import (
+	"beego/app/Service/Dao"
 	"beego/app/controllers"
-	"github.com/astaxie/beego/orm"
 )
 
 type UserController struct {
 	controllers.BaseController
 }
 
-func (this *UserController) Index()  {
-	//TODO 验证
-	mobile := this.GetString("mobile")
-	o := orm.NewOrm()
-	var maps []orm.Params
-	o.Raw("SELECT * FROM `user` WHERE mobile = ? LIMIT 1;", mobile).Values(&maps)
-	json := map[string]interface{}{"code": 0, "data": maps[0]}
-	this.Data["json"] = &json
+func (this *UserController) Find()  {
+	id, _ := this.GetInt("id")
+	json := Dao.UserFind(id)
+
+	this.Data["json"] = json
+	this.ServeJSON()
+}
+
+func (this *UserController) List()  {
+	//TODO
+	json := make(map[string]string)
+	this.Data["json"] = json
 	this.ServeJSON()
 }
 
 func (this *UserController) Register() {
-	id := this.GetString("id")
-	this.Data["json"] = id
+	mobile := this.GetString("mobile")
+	name := this.GetString("name")
+
+	json := Dao.UserInsert(name,mobile)
+
+	this.Data["json"] = json
 	this.ServeJSON()
 }
 
 func (this *UserController) Login()  {
 	mobile := this.GetString("mobile")
 	password := this.GetString("password")
-	json := map[string]interface{}{"mobile":mobile,"password":password}
+	json := make(map[string]string)
+	json["mobile"] = mobile
+	json["password"] = password
 
 	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
 	this.ServeJSON()
