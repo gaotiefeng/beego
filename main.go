@@ -16,6 +16,7 @@ func init()  {
 	orm.RegisterModel(new(models.User))
 
 	beego.BConfig.Listen.HTTPPort = 8030
+	beego.BConfig.WebConfig.EnableDocs = true
 }
 
 func main(){

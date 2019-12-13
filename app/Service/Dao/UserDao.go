@@ -41,3 +41,21 @@ func UserInsert(name string,mobile string) (model interface{}) {
 	}
 	return json
 }
+
+func UserDelete(id int) (model interface{}) {
+	//orm object
+	o := orm.NewOrm()
+	//struct object
+	user := models.User{}
+	user.Id = id
+	num, err := o.Delete(&user)
+	json := make(map[string]interface{})
+	if err != nil {
+		json = map[string]interface{}{"code":500,"message":err}
+	}else {
+		beego.Info("删除成功",num)
+		json = map[string]interface{}{"code":200,"data":num}
+	}
+
+	return json
+}

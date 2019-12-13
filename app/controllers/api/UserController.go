@@ -44,3 +44,12 @@ func (this *UserController) Login()  {
 	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
 	this.ServeJSON()
 }
+
+func (this * UserController) Delete() {
+
+	id,_ := this.GetInt("id")
+	json := Dao.UserDelete(id)
+
+	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
+	this.ServeJSON()
+}
