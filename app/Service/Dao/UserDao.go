@@ -42,6 +42,28 @@ func UserInsert(name string,mobile string) (model interface{}) {
 	return json
 }
 
+func UserUpdate( id int ,name string) (model interface{}) {
+	o := orm.NewOrm()
+
+	user := models.User{}
+
+	user.Id = id
+	err := o.Read(&user)
+	json := make(map[string]interface{})
+	if err == nil {
+		user.Name = name
+		num,err := o.Update(&user)
+		if err != nil {
+			json = map[string]interface{}{"code":200,"message":"更新失败"}
+		}else {
+			json = map[string]interface{}{"code":200,"message":"更新成功","data":num}
+		}
+	}else {
+		json = map[string]interface{}{"code":200,"message":"数据不存在"}
+	}
+	return json
+}
+
 func UserDelete(id int) (model interface{}) {
 	//orm object
 	o := orm.NewOrm()
