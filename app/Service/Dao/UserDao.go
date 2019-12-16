@@ -20,6 +20,16 @@ func UserFind(id int) (err error, user models.User) {
 	return err,user
 }
 
+func UserDaoList(offset int,limit int) (int64,[]orm.ParamsList,error) {
+	user := new(models.User)
+	o := orm.NewOrm()
+
+	var list [] orm.ParamsList
+	count,err := o.QueryTable(user).Limit(limit,offset).ValuesList(&list,"id","name","mobile","password","created_at")
+
+	return count,list,err
+}
+
 func UserDaoInsert(name string,mobile string) (err error, user models.User) {
 	//orm object
 	o := orm.NewOrm()
@@ -41,26 +51,16 @@ func UserDaoInsert(name string,mobile string) (err error, user models.User) {
 	return err,user
 }
 
-func UserUpdate( id int ,name string) (model interface{}) {
+func UserDaoUpdate( id int ,name string) (num int64,err error,user models.User) {
 	o := orm.NewOrm()
 
-	user := models.User{}
+	user = models.User{}
 
 	user.Id = id
-	err := o.Read(&user)
-	json := make(map[string]interface{})
-	if err == nil {
-		user.Name = name
-		num,err := o.Update(&user)
-		if err != nil {
-			json = map[string]interface{}{"code":200,"message":"更新失败"}
-		}else {
-			json = map[string]interface{}{"code":200,"message":"更新成功","data":num}
-		}
-	}else {
-		json = map[string]interface{}{"code":200,"message":"数据不存在"}
-	}
-	return json
+	user.Name = name
+	num,err = o.Update(&user)
+
+	return num,err,user
 }
 
 func UserDaoDelete(id int) (num int64, err error) {

@@ -4,8 +4,16 @@ import (
 	"beego/app/Service/Dao"
 	"beego/app/constants"
 	"beego/app/controllers"
+	"beego/app/models"
 	"github.com/astaxie/beego"
 )
+
+func UserBizUpdate(id int,name string)  (num int64,err error,user models.User){
+
+	num,err,user = Dao.UserDaoUpdate(id, name)
+
+	return num,err,user
+}
 
 func UserBizInsert(name string,mobile string) (json interface{}) {
 

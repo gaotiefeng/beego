@@ -37,7 +37,6 @@ func (this *UserController) Register() {
 
 func (this *UserController) Find() {
 	id, _ := this.GetInt("id")
-	var json interface{}
 	if id == 0 {
 		this.ResponseError(constants.SERVERERROR,"id 不能为空",id)
 	}
@@ -45,30 +44,48 @@ func (this *UserController) Find() {
 
 	if err != nil {
 		beego.Info("查询失败",err)
-		json = controllers.Error(constants.SERVERERROR,"查询失败",err)
+		this.ResponseError(constants.SERVERERROR,"查询失败",err)
 	}else {
-		json = controllers.Success(constants.SERVERERROR,"查询成功",&user)
+		this.ResponseSuccess("查询成功",user)
 	}
-	this.Data["json"] = json
-	this.ServeJSON()
 }
 
 func (this *UserController) List()  {
-	//TODO
-	json := make(map[string]string)
-	this.Data["json"] = json
-	this.ServeJSON()
+	offset, _ := this.GetInt("offset",0)
+	limit, _ := this.GetInt("limit",10)
+
+	count,list,err := Dao.UserDaoList(offset,limit)
+
+	if err != nil {
+		this.ResponseError(constants.SERVERERROR,"查询失败",err)
+	}
+	data := map[string]interface{}{"count":count,"items":list,}
+
+	this.ResponseSuccess("查询成功",data)
 }
 
 
 func (this *UserController) Update()  {
-	//TODO
+
 	id,_ := this.GetInt("id")
 	name := this.GetString("name")
-	json := Dao.UserUpdate(id,name)
+	if id == 0 {
+		this.ResponseError(constants.SERVERERROR,"id 不能为空",id)
+	}
+	err,user := Dao.UserFind(id)
 
-	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
-	this.ServeJSON()
+	if err != nil {
+		beego.Info("查询失败",err)
+		this.ResponseError(constants.SERVERERROR,"id 不存在",err)
+	}
+	num,err,user := api.UserBizUpdate(id,name)
+
+	if err == nil {
+		beego.Info("更新失败",err)
+		this.ResponseError(constants.SERVERERROR,"更新失败",err)
+	}
+	beego.Info(num)
+	this.ResponseSuccess("查询成功",user)
 }
 
 func (this *UserController) Delete() {
