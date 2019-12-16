@@ -28,8 +28,8 @@ func (this *UserController) Login()  {
 func (this *UserController) Register() {
 	mobile := this.GetString("mobile")
 	name := this.GetString("name")
-
-	json := api.UserBizInsert(name,mobile)
+	password := this.GetString("password","123456")
+	json := api.UserBizInsert(name,mobile,password)
 
 	this.Data["json"] = json
 	this.ServeJSON()
@@ -80,12 +80,12 @@ func (this *UserController) Update()  {
 	}
 	num,err,user := api.UserBizUpdate(id,name)
 
-	if err == nil {
+	if err != nil {
 		beego.Info("更新失败",err)
 		this.ResponseError(constants.SERVERERROR,"更新失败",err)
 	}
 	beego.Info(num)
-	this.ResponseSuccess("查询成功",user)
+	this.ResponseSuccess("更新成功",user)
 }
 
 func (this *UserController) Delete() {

@@ -10,13 +10,6 @@ func UserFind(id int) (err error, user models.User) {
 	user = models.User{Id: id}
 	o := orm.NewOrm()
 	err = o.Read(&user)
-	/*json := make(map[string]interface{})
-	if err != nil {
-		beego.Info("查询失败",err)
-		json = map[string]interface{}{"code":404,"message":err}
-	}else {
-		json = map[string]interface{}{"code":200,"data":&user}
-	}*/
 	return err,user
 }
 
@@ -30,7 +23,7 @@ func UserDaoList(offset int,limit int) (int64,[]orm.ParamsList,error) {
 	return count,list,err
 }
 
-func UserDaoInsert(name string,mobile string) (err error, user models.User) {
+func UserDaoInsert(name string,mobile string,password string) (err error, user models.User) {
 	//orm object
 	o := orm.NewOrm()
 	//struct object
@@ -38,16 +31,10 @@ func UserDaoInsert(name string,mobile string) (err error, user models.User) {
 	//对结构体对象赋值
 	user.Name = name
 	user.Mobile = mobile
+	user.Password = password
 	user.CreatedAt = time.Now()
 	//insert
 	_,err = o.Insert(&user)
-	/*json := make(map[string]interface{})
-	if err!= nil {
-		beego.Info("插入失败",err)
-		json = map[string]interface{}{"code":500,"message":err}
-	}else {
-		json = map[string]interface{}{"code":200,"data":&user}
-	}*/
 	return err,user
 }
 
@@ -58,7 +45,7 @@ func UserDaoUpdate( id int ,name string) (num int64,err error,user models.User) 
 
 	user.Id = id
 	user.Name = name
-	num,err = o.Update(&user)
+	num,err = o.Update(&user, "Name")
 
 	return num,err,user
 }

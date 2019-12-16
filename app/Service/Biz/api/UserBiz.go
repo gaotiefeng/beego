@@ -15,9 +15,9 @@ func UserBizUpdate(id int,name string)  (num int64,err error,user models.User){
 	return num,err,user
 }
 
-func UserBizInsert(name string,mobile string) (json interface{}) {
+func UserBizInsert(name string,mobile string,password string) (json interface{}) {
 
-	err,user := Dao.UserDaoInsert(name,mobile)
+	err,user := Dao.UserDaoInsert(name,mobile,password)
 
 	if err != nil {
 		beego.Info("插入失败",err)
