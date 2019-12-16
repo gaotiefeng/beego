@@ -47,7 +47,7 @@ func (this *UserController) Find() {
 		beego.Info("查询失败",err)
 		json = controllers.Error(constants.SERVERERROR,"查询失败",err)
 	}else {
-		json = controllers.Error(constants.SERVERERROR,"查询成功",&user)
+		json = controllers.Success(constants.SERVERERROR,"查询成功",&user)
 	}
 	this.Data["json"] = json
 	this.ServeJSON()

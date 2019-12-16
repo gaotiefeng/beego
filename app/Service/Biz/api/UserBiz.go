@@ -29,10 +29,11 @@ func UserBizDelete(id int) (json interface{}){
 	var message string
 	if err != nil {
 		message = "删除失败"
+		json = controllers.Error(constants.SERVERERROR,message,err)
 	}else {
 		message = "删除成功"
 		beego.Info("删除成功",num)
+		json = controllers.Success(constants.SUCCESS,message,num)
 	}
-	json = controllers.Success(constants.SUCCESS,message,num)
 	return json
 }
