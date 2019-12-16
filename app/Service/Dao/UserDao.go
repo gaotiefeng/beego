@@ -64,20 +64,19 @@ func UserUpdate( id int ,name string) (model interface{}) {
 	return json
 }
 
-func UserDelete(id int) (model interface{}) {
+func UserDelete(id int) (num int64, err error) {
 	//orm object
 	o := orm.NewOrm()
 	//struct object
 	user := models.User{}
 	user.Id = id
-	num, err := o.Delete(&user)
-	json := make(map[string]interface{})
+	num, err = o.Delete(&user)
+	/*json := make(map[string]interface{})
 	if err != nil {
 		json = map[string]interface{}{"code":500,"message":err}
 	}else {
 		beego.Info("删除成功",num)
 		json = map[string]interface{}{"code":200,"data":num}
-	}
-
-	return json
+	}*/
+	return num, err
 }

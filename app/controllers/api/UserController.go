@@ -1,6 +1,7 @@
 package api
 
 import (
+	"beego/app/Service/Biz/api"
 	"beego/app/Service/Dao"
 	"beego/app/controllers"
 )
@@ -57,8 +58,9 @@ func (this *UserController)Update()  {
 func (this *UserController) Delete() {
 
 	id,_ := this.GetInt("id")
-	json := Dao.UserDelete(id)
 
-	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
+	json := api.UserBizDelete(id)
+
+	this.Data["json"] = json
 	this.ServeJSON()
 }
