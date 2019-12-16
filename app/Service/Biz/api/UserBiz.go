@@ -7,12 +7,25 @@ import (
 	"github.com/astaxie/beego"
 )
 
+func UserBizInsert(name string,mobile string) (json interface{}) {
+
+	err,user := Dao.UserDaoInsert(name,mobile)
+
+	if err != nil {
+		beego.Info("插入失败",err)
+		json = controllers.Error(constants.SERVERERROR,"添加失败",user)
+	}else {
+		json = controllers.Success(constants.SUCCESS,"添加成功",user)
+	}
+	return json
+}
+
 func UserBizDelete(id int) (json interface{}){
 	if id == 0 {
 		json = controllers.Error(constants.SERVERERROR,"id 不能为空",id)
 		return json
 	}
-	num,err := Dao.UserDelete(id)
+	num,err := Dao.UserDaoDelete(id)
 	var message string
 	if err != nil {
 		message = "删除失败"
