@@ -3,6 +3,7 @@ package api
 import (
 	"beego/app/Service/Biz/api"
 	"beego/app/Service/Dao"
+	"beego/app/Service/Formatter"
 	"beego/app/constants"
 	"beego/app/controllers"
 	"github.com/astaxie/beego"
@@ -42,11 +43,12 @@ func (this *UserController) Find() {
 	}
 	err,user := Dao.UserFind(id)
 
+	find := Formatter.UserFormatter(user)
 	if err != nil {
 		beego.Info("查询失败",err)
 		this.ResponseError(constants.SERVERERROR,"查询失败",err)
 	}else {
-		this.ResponseSuccess("查询成功",user)
+		this.ResponseSuccess("查询成功",find)
 	}
 }
 

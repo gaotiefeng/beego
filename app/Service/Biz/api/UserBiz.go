@@ -8,8 +8,9 @@ import (
 	"github.com/astaxie/beego"
 )
 
-func UserBizUpdate(id int,name string)  (num int64,err error,user models.User){
 
+
+func UserBizUpdate(id int,name string)  (num int64,err error,user models.User){
 	num,err,user = Dao.UserDaoUpdate(id, name)
 
 	return num,err,user
