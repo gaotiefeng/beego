@@ -13,14 +13,16 @@ func UserFind(id int) (err error, user models.User) {
 	return err,user
 }
 
-func UserDaoList(offset int,limit int) (int64,interface{},error) {
+func UserDaoList(offset int,limit int) (int64,*[]models.User,error) {
 	user := new(models.User)
 	o := orm.NewOrm()
+	userModel := new([]models.User)
+	count,err := o.QueryTable(user).Limit(limit,offset).All(userModel)
 
-	var list [] orm.Params
-	count,err := o.QueryTable(user).Limit(limit,offset).Values(&list,"id","name","mobile","password","created_at")
+	//var list [] orm.Params
+	//count,err := o.QueryTable(user).Limit(limit,offset).Values(&list,"id","name","mobile","password","created_at")
 
-	return count,&list,err
+	return count,userModel,err
 }
 
 func UserDaoInsert(name string,mobile string,password string) (err error, user models.User) {
