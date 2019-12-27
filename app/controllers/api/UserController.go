@@ -15,7 +15,7 @@ type UserController struct {
 
 
 func (this *UserController) Login()  {
-	//TODO
+	//TODO request verify
 	mobile := this.GetString("mobile")
 	password := this.GetString("password")
 	json := make(map[string]string)
