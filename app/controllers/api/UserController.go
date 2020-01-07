@@ -1,11 +1,12 @@
 package api
 
 import (
-	"beego/app/Service/Biz/api"
-	"beego/app/Service/Dao"
-	"beego/app/Service/Formatter"
 	"beego/app/constants"
 	"beego/app/controllers"
+	"beego/app/service/Biz/api"
+	"beego/app/service/Dao"
+	"beego/app/service/Formatter"
+	"beego/app/validation"
 	"github.com/astaxie/beego"
 )
 
@@ -30,6 +31,9 @@ func (this *UserController) Register() {
 	mobile := this.GetString("mobile")
 	name := this.GetString("name")
 	password := this.GetString("password","123456")
+
+	validation.RegisterValidation(name,mobile)
+
 	json := api.UserBizInsert(name,mobile,password)
 
 	this.Data["json"] = json

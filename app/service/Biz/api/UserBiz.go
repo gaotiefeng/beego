@@ -1,7 +1,7 @@
 package api
 
 import (
-	"beego/app/Service/Dao"
+	"beego/app/service/Dao"
 	"beego/app/constants"
 	"beego/app/controllers"
 	"beego/app/models"
