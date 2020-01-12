@@ -54,12 +54,13 @@ func (this *UserController) Register() {
 }
 
 func (this *UserController) Find() {
-	c := make(chan int)
-	go client.Get(c,1)
-	go client.Get(c,2)
-	go client.Post(c,3)
-	go client.Post(c,4)
-	x,y,z,q := <- c, <-c, <-c, <-c
+	g := make(chan int)
+	go client.Get(g,1)
+	go client.Get(g,2)
+	p := make(chan interface{})
+	go client.Post(p)
+	go client.Post(p)
+	x,y,z,q := <- g, <-g, <-p, <-p
 
 	beego.Info("chan is",x,y,z,q)
 

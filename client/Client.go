@@ -29,7 +29,7 @@ func Get(c chan int, i int)  {
 	fmt.Println(string(body))
 }
 
-func Post(c chan int, i int)  {
+func Post(c chan interface{})  {
 	host := config.HOST
 	url := host + config.API
 
@@ -46,7 +46,7 @@ func Post(c chan int, i int)  {
 		// handle error
 	}
 
-	c <- i
+	c <- string(body)
 
 	fmt.Println(string(body))
 }
