@@ -3,6 +3,7 @@ package Dao
 import (
 	"beego/app/models"
 	"github.com/astaxie/beego/orm"
+	"log"
 	"time"
 )
 
@@ -11,6 +12,15 @@ func UserFind(id int) (err error, user models.User) {
 	o := orm.NewOrm()
 	err = o.Read(&user)
 	return err,user
+}
+
+func UserMobile(mobile string)  (err error, user models.User){
+	user = models.User{Mobile: mobile}
+	o := orm.NewOrm()
+	err = o.Read(&user,"Mobile")
+	log.Println(err)
+
+	return err, user
 }
 
 func UserDaoList(offset int,limit int) (int64,*[]models.User,error) {

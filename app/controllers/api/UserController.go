@@ -32,12 +32,24 @@ func (this *UserController) Register() {
 	name := this.GetString("name")
 	password := this.GetString("password","123456")
 
-	validation.RegisterValidation(name,mobile)
+	err := validation.RegisterValidation(name,mobile)
 
-	json := api.UserBizInsert(name,mobile,password)
+	json := controllers.Error(constants.SERVERERROR,"请求参数",mobile)
 
+	if err != nil {
+		json = controllers.Error(constants.SERVERERROR,"参数错误",err)
+		this.Data["json"] = json
+	}else {
+		_, user := Dao.UserMobile(mobile)
+		if user.Id == 0 {
+			json = api.UserBizInsert(name,mobile,password)
+		}else {
+			json = controllers.Error(constants.SERVERERROR,"用户已经存在",user)
+		}
+	}
 	this.Data["json"] = json
 	this.ServeJSON()
+
 }
 
 func (this *UserController) Find() {
