@@ -7,6 +7,7 @@ import (
 	"beego/app/service/Dao"
 	"beego/app/service/Formatter"
 	"beego/app/validation"
+	"beego/client"
 	"github.com/astaxie/beego"
 )
 
@@ -53,6 +54,15 @@ func (this *UserController) Register() {
 }
 
 func (this *UserController) Find() {
+	c := make(chan int)
+	go client.Get(c,1)
+	go client.Get(c,2)
+	go client.Post(c,3)
+	go client.Post(c,4)
+	x,y,z,q := <- c, <-c, <-c, <-c
+
+	beego.Info("chan is",x,y,z,q)
+
 	id, _ := this.GetInt("id")
 	if id == 0 {
 		this.ResponseError(constants.SERVERERROR,"id 不能为空",id)
