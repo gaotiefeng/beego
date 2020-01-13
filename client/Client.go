@@ -26,10 +26,10 @@ func Get(c chan int, i int)  {
 
 	c <- i
 
-	fmt.Println(string(body))
+	fmt.Println("client get out",string(body))
 }
 
-func Post(c chan interface{})  {
+func Post(c chan interface{},n int)  {
 	host := config.HOST
 	url := host + config.API
 
@@ -46,9 +46,12 @@ func Post(c chan interface{})  {
 		// handle error
 	}
 
-	c <- string(body)
+	for i := 0; i < n; i++ {
+		c <- string(body)
+	}
+	close(c)
 
-	fmt.Println(string(body))
+	fmt.Println("client post out",string(body))
 }
 
 

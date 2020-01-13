@@ -14,7 +14,6 @@ func RegisterValidation(name string,mobile string) (err error){
 	u := User{name, mobile}
 	valid := validation.Validation{}
 	valid.Required(u.Name, "name")
-	valid.MaxSize(u.Name, 15, "nameMax")
 	valid.Mobile(u.Mobile, "mobile")
 	if valid.HasErrors() {
 		// validation does not pass

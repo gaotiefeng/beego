@@ -20,9 +20,18 @@ func (this *UserController) Login()  {
 	//TODO request verify
 	mobile := this.GetString("mobile")
 	password := this.GetString("password")
-	json := make(map[string]string)
-	json["mobile"] = mobile
-	json["password"] = password
+
+	err, user := Dao.UserMobile(mobile)
+	json := controllers.Error(constants.SERVERERROR,"请求参数",mobile)
+	if err != nil {
+		json = controllers.Error(404,"请输入正确手机号",err)
+	}else {
+		if password == user.Password{
+			json = controllers.Success(200,"登陆成功",user)
+		}else {
+			json = controllers.Error(constants.SERVERERROR,"密码错误",mobile)
+		}
+	}
 
 	this.Data["json"] = map[string]interface{}{"code":200,"data":json}
 	this.ServeJSON()
@@ -57,12 +66,19 @@ func (this *UserController) Find() {
 	g := make(chan int)
 	go client.Get(g,1)
 	go client.Get(g,2)
-	p := make(chan interface{})
-	go client.Post(p)
-	go client.Post(p)
-	x,y,z,q := <- g, <-g, <-p, <-p
+	p := make(chan interface{},2)
 
-	beego.Info("chan is",x,y,z,q)
+	go client.Post(p,cap(p))
+
+	x, y := <-g , <-g
+	beego.Info("g chan is",x,y)
+
+	for i := range p {
+		beego.Info("p chan is",i)
+	}
+	v,ok := <-p
+	beego.Info("p v ",v)
+	beego.Info("p v ",ok)
 
 	id, _ := this.GetInt("id")
 	if id == 0 {
