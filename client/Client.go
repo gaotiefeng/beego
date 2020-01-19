@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Get(c chan int, i int)  {
+func Get()  {
 	host := config.HOST
 	url := host + config.API + "?user=go"
 
@@ -24,12 +24,10 @@ func Get(c chan int, i int)  {
 		// handle error
 	}
 
-	c <- i
-
 	fmt.Println("client get out",string(body))
 }
 
-func Post(c chan interface{},n int)  {
+func Post()  {
 	host := config.HOST
 	url := host + config.API
 
@@ -45,11 +43,6 @@ func Post(c chan interface{},n int)  {
 	if err != nil {
 		// handle error
 	}
-
-	for i := 0; i < n; i++ {
-		c <- string(body)
-	}
-	close(c)
 
 	fmt.Println("client post out",string(body))
 }

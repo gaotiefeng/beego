@@ -7,7 +7,6 @@ import (
 	"beego/app/service/Dao"
 	"beego/app/service/Formatter"
 	"beego/app/validation"
-	"beego/client"
 	"github.com/astaxie/beego"
 )
 
@@ -63,22 +62,6 @@ func (this *UserController) Register() {
 }
 
 func (this *UserController) Find() {
-	g := make(chan int)
-	go client.Get(g,1)
-	go client.Get(g,2)
-	p := make(chan interface{},2)
-
-	go client.Post(p,cap(p))
-
-	x, y := <-g , <-g
-	beego.Info("g chan is",x,y)
-
-	for i := range p {
-		beego.Info("p chan is",i)
-	}
-	v,ok := <-p
-	beego.Info("p v ",v)
-	beego.Info("p v ",ok)
 
 	id, _ := this.GetInt("id")
 	if id == 0 {
