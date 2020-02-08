@@ -40,7 +40,7 @@ func (this *UserController) Register() {
 	mobile := this.GetString("mobile")
 	name := this.GetString("name")
 	password := this.GetString("password","123456")
-
+	//验证
 	err := validation.RegisterValidation(name,mobile)
 
 	json := controllers.Error(constants.SERVERERROR,"请求参数",mobile)
