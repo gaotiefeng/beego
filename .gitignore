@@ -2,4 +2,3 @@
 !*.idea
 .idea/
 config/Database.go
-runtime/log
