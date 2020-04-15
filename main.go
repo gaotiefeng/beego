@@ -2,6 +2,7 @@ package main
 
 import (
 	"beego/app/models"
+	"beego/config"
 	_ "beego/routers"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -9,7 +10,8 @@ import (
 )
 
 func init()  {
-	dataSrouce := "liunian:" + "Gtf2019." + "@tcp(127.0.0.1:3306)/beego?charset=utf8"
+
+	dataSrouce := config.MYSQL_USERNAME + ":" + config.MYSQL_PASSWORD + "@tcp(127.0.0.1:3306)/beego?charset=utf8"
 
 	orm.RegisterDataBase("default","mysql",dataSrouce,60)
 
