@@ -15,31 +15,31 @@ func (c *BaseController) Welcome() {
 	c.ServeJSON()
 }
 
-func Success(code int,message string,data interface{}) (json interface{}){
+func Success(code int, message string, data interface{}) (json interface{}) {
 
-	json = map[string]interface{}{"code":code,"message":message,"data":data}
+	json = map[string]interface{}{"code": code, "message": message, "data": data}
 
 	return json
 }
 
-func Error(code int,message string, data interface{}) (json interface{}) {
+func Error(code int, message string, data interface{}) (json interface{}) {
 
-	json = map[string]interface{}{"code":code,"message":message,"data":data}
+	json = map[string]interface{}{"code": code, "message": message, "data": data}
 	return json
 }
 
-func (this *BaseController) ResponseError (code int,message string, data interface{}) () {
+func (this *BaseController) ResponseError(code int, message string, data interface{}) {
 
 	var json interface{}
-	json = map[string]interface{}{"code":code,"message":message,"data":data}
+	json = map[string]interface{}{"code": code, "message": message, "data": data}
 	this.Data["json"] = json
 	this.ServeJSON()
 }
 
-func (this *BaseController) ResponseSuccess (message string, data interface{}) () {
+func (this *BaseController) ResponseSuccess(message string, data interface{}) {
 
 	var json interface{}
-	json = map[string]interface{}{"code":constants.SUCCESS,"message":message,"data":data}
+	json = map[string]interface{}{"code": constants.SUCCESS, "message": message, "data": data}
 	this.Data["json"] = json
 	this.ServeJSON()
 }

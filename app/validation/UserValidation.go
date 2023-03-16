@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	Name string
+	Name   string
 	Mobile string
 }
 
-func RegisterValidation(name string,mobile string) (err error){
+func RegisterValidation(name string, mobile string) (err error) {
 	u := User{name, mobile}
 	valid := validation.Validation{}
 	valid.Required(u.Name, "name")
