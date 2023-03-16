@@ -11,7 +11,7 @@ import (
 
 func init() {
 
-	dataSrouce := config.MYSQL_USERNAME + ":" + config.MYSQL_PASSWORD + "@tcp(127.0.0.1:3306)/beego?charset=utf8"
+	dataSrouce := config.MYSQL_USERNAME + ":" + config.MYSQL_PASSWORD + "@tcp(127.0.0.1:3306)/" + config.MYSQL_DATABASE + "?charset=utf8"
 
 	orm.RegisterDataBase("default", "mysql", dataSrouce, 60)
 
