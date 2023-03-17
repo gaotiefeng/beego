@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  mysql:
+    image: "mysql/mysql-server:5.7"
+    environment:
+      TZ: "Asia/Shanghai"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "beego-api"
+    networks:
+      - net
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./.github/beego-api.sql:/sql/beego-api.sql
+    restart: "always"
+  beego-api:
+    image: "beego-api:latest"
+    build:
+      context: "."
+    ports:
+      - "8030:8030"
+    depends_on:
+        - mysql
+    environment:
+      TEST_BEEGO_ENV: "beego-api"
+      APP_RUNMODE: "docker"
+    networks:
+      - net
+    restart: "always"
+    deploy:
+      replicas: 1
+
+networks:
+  net:
+volumes:
+  mysql-data:
